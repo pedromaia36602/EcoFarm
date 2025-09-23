@@ -1,15 +1,21 @@
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { Button, Image, ImageBackground, StyleSheet, Text, TextInput } from 'react-native';
 
 const App = () => {
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
+  const handleLogin = () => {
+    // validação simples
+    router.push('/home'); // navega para /home
+  };
 
   return (
     
     <ImageBackground
       source={require('../../assets/images/nature.jpeg')}
-      style={styles.container}
+      style={styles.background}
       resizeMode="cover"
     >
       
@@ -31,14 +37,18 @@ const App = () => {
         value={senha}
         onChangeText={(newSenha) => setSenha(newSenha)}
       />
-      <Button title="Entrar" onPress={() => {
-         
-      }} />
+      <Button title="Entrar" onPress={handleLogin} />
     </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,          // ocupa toda a tela
+    width: '100%',     // garante largura total
+    height: '100%',    // garante altura total
+    resizeMode: 'contain',
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
