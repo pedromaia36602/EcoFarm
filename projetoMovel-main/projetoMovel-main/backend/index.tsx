@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Alert, FlatList, RefreshControl, StyleSheet, Text, View } from "react-native";
+import { Alert, Dimensions, FlatList, RefreshControl, StyleSheet, Text, View } from "react-native";
+import { PieChart } from "react-native-chart-kit";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 // === Interface do Registro ===
@@ -13,17 +14,29 @@ interface Registro {
 
 export default function App() {
   const [dados, setDados] = useState<Registro[]>([]);
-  const [carregando, setCarregando] = useState(false);
+  const [carregando, setCarregando] = useState(false);const molhado = dados.filter(d => d.umidade < 300).length;
+  const umido = dados.filter(d => d.umidade >= 300 && d.umidade < 600).length;
+  const seco = dados.filter(d => d.umidade >= 600).length;
+
+  const data = [
+    { name: "Seco", population: seco, color: "#ff6b6b", legendFontColor: "#333", legendFontSize: 14 },
+    { name: "Úmido", population: umido, color: "#feca57", legendFontColor: "#333", legendFontSize: 14 },
+    { name: "Molhado", population: molhado, color: "#1dd1a1", legendFontColor: "#333", legendFontSize: 14 },
+  ];
+
 
   // === ALTERE AQUI o IP do seu PC que roda o Flask ===
   //const API_URL = "http://10.182.180.62:5000/dados"; 
-  const API_URL = "http://localhost:5000/dados";
+  const API_URL = "http://192.168.15.30:5000/dados";
 
   // Função para buscar dados
   async function carregarDados() {
+    
     try {
       setCarregando(true);
       const response = await axios.get<Registro[]>(API_URL);
+      console.log("Dados recebidos do servidor:", response.data);
+      
       const novosDados = response.data;
 
       // Verifica se houve acionamento da bomba
@@ -53,6 +66,19 @@ export default function App() {
   return (
     <SafeAreaView style={estilos.container}>
       <Text style={estilos.titulo}>🌱 Monitor de Umidade do Solo</Text>
+      <PieChart
+        data={data}
+        width={Dimensions.get("window").width - 40}
+        height={200}
+        chartConfig={{
+          color: () => `rgba(0, 0, 0, 0.5)`,
+        }}
+        accessor={"population"}
+        backgroundColor={"transparent"}
+        paddingLeft={"15"}
+        absolute
+      />
+
       <FlatList
         data={dados}
         keyExtractor={(item) => item.id.toString()}
