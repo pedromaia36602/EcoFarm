@@ -1,4 +1,4 @@
-# Projeto Móvel – Monitoramento de Umidade do Solo com Arduino, Flask e Expo
+# Projeto Móvel EcoFarm – Monitoramento de Umidade do Solo com Arduino, Flask e Expo
 
 🌾 EcoFarm: Monitoramento de Umidade e Temperatura para Agronegócios
 
