@@ -1,44 +1,44 @@
 // Arduino - Sensor de umidade do solo e Sensor de chuva
-// Corrigido: valorSensorUmidadeSolo agora é global
 
-int sensorUmidadeSolo = A0;             // Sensor de umidade do solo pino A0
-int portaRele = 4;                      // porta de controle do relé conectada no D4
-int valorLimiteUmidade = 600;           // valor de comparação (0-1023)
-bool soloUmido;                         // condição de solo úmido 
-int valorSensorUmidadeSolo = 0;         // <-- variável global (corrigido)
+
+int sensorUmidadeSolo = A0;             
+int portaRele = 4;                      
+int valorLimiteUmidade = 600;         
+bool soloUmido;                         
+int valorSensorUmidadeSolo = 0;         
 
 void setup()
 {
-  pinMode(sensorUmidadeSolo, INPUT);     // A0 entrada
-  pinMode(portaRele, OUTPUT);            // D4 saída
-  digitalWrite(portaRele, HIGH);         // Mantenha relé desligado 
-  Serial.begin(9600);                    // Monitor serial 9600 Bps
+  pinMode(sensorUmidadeSolo, INPUT);     
+  pinMode(portaRele, OUTPUT);            
+  digitalWrite(portaRele, HIGH);         
+  Serial.begin(9600);                    
 }
 
 void SensorDeUmidade ()
 {
-  // atribui ao global (não declarar int aqui)
-  valorSensorUmidadeSolo = analogRead(sensorUmidadeSolo);    // leitura do sensor
+
+  valorSensorUmidadeSolo = analogRead(sensorUmidadeSolo);   
   Serial.print(valorSensorUmidadeSolo);
 
-  if (valorSensorUmidadeSolo < valorLimiteUmidade) // menor = mais úmido (dependendo do sensor)
+  if (valorSensorUmidadeSolo < valorLimiteUmidade) /
   {
     Serial.println("  => O solo esta úmido");
-    soloUmido = 1;  // solo úmido
+    soloUmido = 1;  
   }
   else
   {
     Serial.println("  => O solo esta seco");
-    soloUmido = 0;  // solo seco
+    soloUmido = 0;  
   }
 }
 
-void ControleDoRele()  // aciona a bomba (ajuste tempo se quiser)
+void ControleDoRele()  
 {
-  digitalWrite(portaRele, LOW);   // relé ligado (assumindo relé ativo LOW)
+  digitalWrite(portaRele, LOW);   
   Serial.println(" Relé acionado ");
-  delay (1000);                   // tempo de acionamento da bomba = 1 segundo
-  digitalWrite(portaRele, HIGH);  // relé desligado
+  delay (1000);                  
+  digitalWrite(portaRele, HIGH);  
 }
 
 void loop()
@@ -47,14 +47,13 @@ void loop()
   {
     SensorDeUmidade ();
 
-    // imprime no formato que o Python espera: "Umidade:530;Bomba:1"
-    // Bomba: 1 -> quando a bomba foi acionada (no seu código bomba aciona quando soloUmido == 0)
+
     Serial.print("Umidade:");
     Serial.print(valorSensorUmidadeSolo);
     Serial.print(";Bomba:");
     Serial.println(soloUmido == 0 ? 1 : 0);
 
-    if (soloUmido == 0) ControleDoRele();  // aciona a bomba se solo seco
+    if (soloUmido == 0) ControleDoRele();  
 
     Serial.print(i * 10);
     Serial.println(" segundos");
