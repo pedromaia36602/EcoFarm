@@ -77,14 +77,15 @@ aplicativo Expo exibe as informações ao usuário em tempo real.
 
 Nenhuma externa (somente Serial, analogRead, etc.)
 
-#### Python
+#### 🐍 Python
 
     pip install flask flask-cors pyserial
 
-#### React Native / Expo
+#### 📦 React Native / Expo
 
     npm install
     npm install axios
+    npx expo install react-native-safe-area-context react-native-chart-kit
 
 ------------------------------------------------------------------------
 
