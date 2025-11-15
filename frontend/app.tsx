@@ -11,9 +11,7 @@ import {
 } from 'react-native';
 import Monitor from './Monitor';
 
-// =====================================================
-// LOGIN
-// =====================================================
+
 const LoginScreen = ({ onLogin }) => {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
@@ -53,9 +51,7 @@ const LoginScreen = ({ onLogin }) => {
   );
 };
 
-// =====================================================
-// DASHBOARD
-// =====================================================
+
 const Dashboard = ({
   email,
   onLogout,
@@ -76,7 +72,7 @@ const Dashboard = ({
   });
 
 
-  // Traduções básicas
+  
   const textos = {
     pt: {
       perfil: 'Perfil',
@@ -281,9 +277,7 @@ const Dashboard = ({
 };
 
 
-// =====================================================
-// APP PRINCIPAL
-// =====================================================
+
 export default function App() {
   const [logado, setLogado] = useState(false);
   const [emailUsuario, setEmailUsuario] = useState('');
@@ -307,9 +301,7 @@ export default function App() {
   );
 }
 
-// =====================================================
-// ESTILOS
-// =====================================================
+
 const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#eef3f8' },
   logo: { fontSize: 42, fontWeight: 'bold', color: '#2e7d32' },
