@@ -96,15 +96,28 @@ Nenhuma externa (somente Serial, analogRead, etc.)
 
 ## 1️⃣ Enviar o código para o Arduino
 
--   Abrir Arduino IDE  
--   Carregar o arquivo `.ino`  
--   Enviar para o Arduino
+-   Abrir a Arduino IDE  
+-   Carregar o arquivo `sketch_oct20a.ino`  
+-   Enviar o código para o Arduino
 
-## 2️⃣ Rodar o backend Flask
+## 2️⃣ Organizar os arquivos no projeto Expo
+
+Antes de iniciar o backend e o aplicativo, é necessário colocar os
+arquivos corretos dentro do Expo:
+
+-   Abrir a pasta do projeto Expo  
+-   Acessar a pasta `tabs/`  
+-   Colocar **todos os arquivos das pastas `frontend` e `backend`**
+    dentro da pasta `tabs/`  
+    (📌 *exceto o arquivo `.ino`, que fica somente na Arduino IDE*)  
+-   O arquivo **`index.tsx` deve ser substituído** pelo index fornecido
+    no projeto
+
+## 3️⃣ Rodar o backend Flask
 
     python main.py
 
-## 3️⃣ Rodar o app Expo
+## 4️⃣ Rodar o app Expo
 
     npx expo start
 
