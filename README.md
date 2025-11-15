@@ -10,11 +10,7 @@ Objetivo: Reduzir perdas, otimizar o uso de recursos (como irrigação) e garant
 
 ✨ Funcionalidades Principais
 
-Monitoramento em Tempo Real: Visualização horária de umidade (%) e temperatura (°C).
-
-Dashboard Intuitivo: Resumo rápido do status de múltiplas zonas de monitoramento.
-
-Sistema de Alertas: Notificações push proativas (via Expo) quando os limites pré-definidos são excedidos, prevenindo danos críticos.
+Monitoramento em Tempo Real: Visualização horária de umidade.
 
 Gráficos Históricos: Análise de tendências e padrões climáticos ao longo do tempo.
 
