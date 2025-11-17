@@ -21,7 +21,7 @@ void SensorDeUmidade ()
   valorSensorUmidadeSolo = analogRead(sensorUmidadeSolo);   
   Serial.print(valorSensorUmidadeSolo);
 
-  if (valorSensorUmidadeSolo < valorLimiteUmidade) /
+  if (valorSensorUmidadeSolo < valorLimiteUmidade)
   {
     Serial.println("  => O solo esta úmido");
     soloUmido = 1;  
