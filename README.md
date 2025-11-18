@@ -37,7 +37,7 @@ aplicativo Expo exibe as informações ao usuário em tempo real.
 | RA               | Nome                           |
 |------------------|--------------------------------|
 | **202403019752** | **Pedro Adolfo Custodio Maia** |
-| **202403502786** | **Isadora Geremias de Melo**   |
+| **202403503786** | **Isadora Geremias de Melo**   |
 
 ------------------------------------------------------------------------
 
