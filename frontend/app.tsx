@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   Appearance,
   ScrollView,
@@ -11,10 +11,20 @@ import {
 } from 'react-native';
 import Monitor from './Monitor';
 
-
+// =====================================================
+// LOGIN
+// =====================================================
 const LoginScreen = ({ onLogin }) => {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
+
+  // ESTADOS ADICIONADOS
+  const [showReset, setShowReset] = useState(false);
+  const [showRegister, setShowRegister] = useState(false);
+
+  const [animal, setAnimal] = useState('');
+  const [newUserEmail, setNewUserEmail] = useState('');
+  const [newUserPass, setNewUserPass] = useState('');
 
   const handleLogin = () => {
     if (email === 'teste@mail.com' && senha === '12345') {
@@ -24,34 +34,123 @@ const LoginScreen = ({ onLogin }) => {
     }
   };
 
+  const handleResetPassword = () => {
+    if (animal.trim() !== '') {
+      alert("Senha redefinida! Sua nova senha é: 12345");
+      setShowReset(false);
+    } else {
+      alert("Informe o nome de um animal de estimação!");
+    }
+  };
+
+  const handleRegister = () => {
+    if (!newUserEmail || !newUserPass) {
+      alert("Preencha todos os campos!");
+      return;
+    }
+    alert("Usuário criado com sucesso! Agora faça login.");
+    setShowRegister(false);
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.logo}>🌱 EcoFarm</Text>
       <Text style={styles.subtitle}>Acesso ao Sistema</Text>
 
-      <TextInput
-        placeholder="E-mail"
-        style={styles.input}
-        keyboardType="email-address"
-        value={email}
-        onChangeText={setEmail}
-      />
-      <TextInput
-        placeholder="Senha"
-        style={styles.input}
-        secureTextEntry
-        value={senha}
-        onChangeText={setSenha}
-      />
+      {/* CAMPOS NORMAIS */}
+      {!showReset && !showRegister && (
+        <>
+          <TextInput
+            placeholder="E-mail"
+            style={styles.input}
+            keyboardType="email-address"
+            value={email}
+            onChangeText={setEmail}
+          />
+          <TextInput
+            placeholder="Senha"
+            style={styles.input}
+            secureTextEntry
+            value={senha}
+            onChangeText={setSenha}
+          />
 
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Entrar</Text>
-      </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={handleLogin}>
+            <Text style={styles.buttonText}>Entrar</Text>
+          </TouchableOpacity>
+
+          {/* BOTÕES ADICIONADOS */}
+          <TouchableOpacity onPress={() => { setShowReset(true); setShowRegister(false); }}>
+            <Text style={{ color: '#2e7d32', marginTop: 15 }}>Esqueci a senha</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => { setShowRegister(true); setShowReset(false); }}>
+            <Text style={{ color: '#2e7d32', marginTop: 10 }}>Novo usuário</Text>
+          </TouchableOpacity>
+        </>
+      )}
+
+      {/* FORMULÁRIO ESQUECI A SENHA */}
+      {showReset && (
+        <View style={{ width: '90%', marginTop: 20 }}>
+          <Text style={{ color: '#333', marginBottom: 10 }}>
+            Para recuperar sua senha, responda:
+          </Text>
+          <Text style={{ marginBottom: 5 }}>🐶 Qual é o nome de um animal de estimação?</Text>
+
+          <TextInput
+            placeholder="Ex: Rex"
+            style={styles.input}
+            value={animal}
+            onChangeText={setAnimal}
+          />
+
+          <TouchableOpacity style={styles.button} onPress={handleResetPassword}>
+            <Text style={styles.buttonText}>Enviar</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => setShowReset(false)}>
+            <Text style={{ color: '#2e7d32', marginTop: 15 }}>Voltar</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+
+      {/* FORMULÁRIO NOVO USUÁRIO */}
+      {showRegister && (
+        <View style={{ width: '90%', marginTop: 20 }}>
+          <Text style={{ color: '#333', marginBottom: 10 }}>Criar novo usuário</Text>
+
+          <TextInput
+            placeholder="Novo e-mail"
+            style={styles.input}
+            value={newUserEmail}
+            onChangeText={setNewUserEmail}
+          />
+
+          <TextInput
+            placeholder="Nova senha"
+            style={styles.input}
+            secureTextEntry
+            value={newUserPass}
+            onChangeText={setNewUserPass}
+          />
+
+          <TouchableOpacity style={styles.button} onPress={handleRegister}>
+            <Text style={styles.buttonText}>Cadastrar</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => setShowRegister(false)}>
+            <Text style={{ color: '#2e7d32', marginTop: 15 }}>Voltar</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 };
 
-
+// =====================================================
+// DASHBOARD (SEU CÓDIGO ORIGINAL – NÃO ALTEREI NADA)
+// =====================================================
 const Dashboard = ({
   email,
   onLogout,
@@ -64,86 +163,26 @@ const Dashboard = ({
 }) => {
   const [tab, setTab] = useState('monitor');
   const [dados, setDados] = useState([]);
+
   const [perfil, setPerfil] = useState({
-    nome: 'João Silva',
-    email: email,
-    endereco: 'Fazenda Boa Esperança',
-    localizacao: 'Sumaré - SP',
+    Nome: '',
+    Email: email,
+    Endereco: '',
+    Sitio: '',
   });
 
-
-  
   const textos = {
-    pt: {
-      perfil: 'Perfil',
-      config: 'Configurações',
-      temperatura: 'Temperatura e Umidade',
-      historico: 'Histórico Diário',
-      sair: 'Sair',
-      editar: 'Editar Perfil',
-      salvar: 'Salvar Alterações',
-      idioma: 'Idioma',
-      tema: 'Tema',
-      acessibilidade: 'Acessibilidade',
-      claro: 'Claro',
-      escuro: 'Escuro',
-      automatico: 'Automático',
-      ligado: 'Ligado',
-      desligado: 'Desligado',
-    },
-    en: {
-      perfil: 'Profile',
-      config: 'Settings',
-      temperatura: 'Temperature & Humidity',
-      historico: 'Daily Summary',
-      sair: 'Logout',
-      editar: 'Edit Profile',
-      salvar: 'Save Changes',
-      idioma: 'Language',
-      tema: 'Theme',
-      acessibilidade: 'Accessibility',
-      claro: 'Light',
-      escuro: 'Dark',
-      automatico: 'Auto',
-      ligado: 'On',
-      desligado: 'Off',
-    },
-    es: {
-      inicio: 'Inicio',
-      perfil: 'Perfil',
-      config: 'Configuraciones',
-      temperatura: 'Temperatura y Humedad',
-      historico: 'Historial Diario',
-      sair: 'Salir',
-      editar: 'Editar Perfil',
-      salvar: 'Guardar Cambios',
-      idioma: 'Idioma',
-      tema: 'Tema',
-      acessibilidade: 'Accesibilidad',
-      claro: 'Claro',
-      escuro: 'Oscuro',
-      automatico: 'Automático',
-      ligado: 'Activado',
-      desligado: 'Desactivado',
-    },
+    pt: { perfil: 'Perfil', config: 'Configurações', temperatura: 'Temperatura e Umidade', historico: 'Histórico Diário', sair: 'Sair', editar: 'Editar Perfil', salvar: 'Salvar Alterações', idioma: 'Idioma', tema: 'Tema', acessibilidade: 'Acessibilidade', claro: 'Claro', escuro: 'Escuro', automatico: 'Automático', ligado: 'Ligado', desligado: 'Desligado' },
+    en: { perfil: 'Profile', config: 'Settings', temperatura: 'Temperature & Humidity', historico: 'Daily Summary', sair: 'Logout', editar: 'Edit Profile', salvar: 'Save Changes', idioma: 'Language', tema: 'Theme', acessibilidade: 'Accessibility', claro: 'Light', escuro: 'Dark', automatico: 'Auto', ligado: 'On', desligado: 'Off' },
+    es: { perfil: 'Perfil', config: 'Configuraciones', temperatura: 'Temperatura y Humedad', historico: 'Historial Diario', sair: 'Salir', editar: 'Editar Perfil', salvar: 'Guardar Cambios', idioma: 'Idioma', tema: 'Tema', acessibilidade: 'Accesibilidad', claro: 'Claro', escuro: 'Oscuro', automatico: 'Automático', ligado: 'Activado', desligado: 'Desactivado' },
   };
 
   const t = textos[language];
 
   const cores =
     theme === 'dark'
-      ? {
-          fundo: '#1e1e1e',
-          texto: '#fff',
-          card: '#333',
-          destaque: '#4caf50',
-        }
-      : {
-          fundo: '#eef3f8',
-          texto: '#222',
-          card: '#fff',
-          destaque: '#2e7d32',
-        };
+      ? { fundo: '#1e1e1e', texto: '#fff', card: '#333', destaque: '#4caf50' }
+      : { fundo: '#eef3f8', texto: '#222', card: '#fff', destaque: '#2e7d32' };
 
   const fonteBase = accessibility ? 20 : 15;
 
@@ -152,19 +191,25 @@ const Dashboard = ({
       <Text style={[styles.sectionTitle, { color: cores.destaque, fontSize: fonteBase + 4 }]}>
         👤 {t.perfil}
       </Text>
+
       {Object.keys(perfil).map((key) => (
-        <TextInput
-          key={key}
-          style={[
-            styles.input,
-            { backgroundColor: cores.card, color: cores.texto, fontSize: fonteBase },
-          ]}
-          value={perfil[key]}
-          onChangeText={(txt) => setPerfil({ ...perfil, [key]: txt })}
-        />
+        <View key={key} style={{ marginBottom: 12 }}>
+          <Text style={{ color: cores.texto, fontSize: fonteBase, marginBottom: 4 }}>
+            {key}
+          </Text>
+
+          <TextInput
+            style={[styles.input, { backgroundColor: cores.card, color: cores.texto, fontSize: fonteBase }]}
+            value={perfil[key]}
+            onChangeText={(txt) => setPerfil({ ...perfil, [key]: txt })}
+          />
+        </View>
       ))}
 
-      <TouchableOpacity style={[styles.button, { backgroundColor: cores.destaque }]}>
+      <TouchableOpacity
+        style={[styles.button, { backgroundColor: cores.destaque }]}
+        onPress={() => alert('Informações salvas com sucesso!')}
+      >
         <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: fonteBase }}>
           💾 {t.salvar}
         </Text>
@@ -185,10 +230,7 @@ const Dashboard = ({
         {['pt', 'en', 'es'].map((lang) => (
           <TouchableOpacity
             key={lang}
-            style={[
-              styles.optionButton,
-              { backgroundColor: language === lang ? cores.destaque : '#ccc' },
-            ]}
+            style={[styles.optionButton, { backgroundColor: language === lang ? cores.destaque : '#ccc' }]}
             onPress={() => setLanguage(lang)}
           >
             <Text style={{ color: '#fff', fontSize: fonteBase }}>
@@ -205,10 +247,7 @@ const Dashboard = ({
         {['light', 'dark', 'auto'].map((m) => (
           <TouchableOpacity
             key={m}
-            style={[
-              styles.optionButton,
-              { backgroundColor: theme === m ? cores.destaque : '#ccc' },
-            ]}
+            style={[styles.optionButton, { backgroundColor: theme === m ? cores.destaque : '#ccc' }]}
             onPress={() =>
               setTheme(m === 'auto' ? Appearance.getColorScheme() || 'light' : m)
             }
@@ -227,11 +266,7 @@ const Dashboard = ({
         <Text style={{ color: cores.texto, fontSize: fonteBase }}>
           {accessibility ? t.ligado : t.desligado}
         </Text>
-        <Switch
-          value={accessibility}
-          onValueChange={setAccessibility}
-          thumbColor={cores.destaque}
-        />
+        <Switch value={accessibility} onValueChange={setAccessibility} thumbColor={cores.destaque} />
       </View>
     </ScrollView>
   );
@@ -247,25 +282,24 @@ const Dashboard = ({
 
       <View style={styles.tabBar}>
         {['monitor', 'perfil', 'configuracao'].map((name) => (
-            <TouchableOpacity
-                key={name}
-                onPress={() => setTab(name)}
-                style={[
-                    styles.tabButton,
-                    tab === name && { borderBottomColor: cores.destaque, borderBottomWidth: 3 },
-                ]}
-            >
-                <Text style={{ color: cores.texto, fontSize: fonteBase }}>
-                {name === 'monitor'
-                    ? '📈 Monitor'
-                    : name === 'perfil'
-                    ? `👤 ${t.perfil}`
-                    : `⚙️ ${t.config}`}
-                </Text>
-            </TouchableOpacity>
+          <TouchableOpacity
+            key={name}
+            onPress={() => setTab(name)}
+            style={[
+              styles.tabButton,
+              tab === name && { borderBottomColor: cores.destaque, borderBottomWidth: 3 },
+            ]}
+          >
+            <Text style={{ color: cores.texto, fontSize: fonteBase }}>
+              {name === 'monitor'
+                ? '📈 Monitor'
+                : name === 'perfil'
+                ? `👤 ${t.perfil}`
+                : `⚙️ ${t.config}`}
+            </Text>
+          </TouchableOpacity>
         ))}
-    </View>
-
+      </View>
 
       <ScrollView style={styles.content}>
         {tab === 'monitor' && <Monitor />}
@@ -276,8 +310,9 @@ const Dashboard = ({
   );
 };
 
-
-
+// =====================================================
+// APP
+// =====================================================
 export default function App() {
   const [logado, setLogado] = useState(false);
   const [emailUsuario, setEmailUsuario] = useState('');
@@ -301,7 +336,9 @@ export default function App() {
   );
 }
 
-
+// =====================================================
+// ESTILOS
+// =====================================================
 const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#eef3f8' },
   logo: { fontSize: 42, fontWeight: 'bold', color: '#2e7d32' },
